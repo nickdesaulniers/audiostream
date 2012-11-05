@@ -3,9 +3,15 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery-1.8.2.min.js"></script>
+    <script src="/javascripts/myscript.js"></script>
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <% for (var i = 0, len = files.length; i < len; i++) { %>
+      <input type="button" value="<%= files[i] %>"></input>
+      <br />
+    <% } %>
   </body>
 </html>
