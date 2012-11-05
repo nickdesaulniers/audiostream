@@ -12,6 +12,8 @@ var express = require('express')
 var app = express();
 
 app.configure(function(){
+  // HTTP Basic Authentication
+  app.use(express.basicAuth('username', 'password'));
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
