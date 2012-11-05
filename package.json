@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "audiostream",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,5 +8,23 @@
   "dependencies": {
     "express": "3.0.1",
     "ejs": "*"
-  }
+  },
+  "description": "Stream and transcode your music library",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nickdesaulniers/audiostream.git"
+  },
+  "keywords": [
+    "audio",
+    "stream",
+    "transcode",
+    "jukebox",
+    "music",
+    "library",
+    "browser"
+  ],
+  "author": "Nick Desaulniers",
+  "license": "MPL2.0"
 }
