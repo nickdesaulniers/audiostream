@@ -1,15 +1,40 @@
 var fs = require('fs');
-var dir = '/Users/wangstabill/Downloads/A\ Perfect\ Circle\ \(Thirteenth\ Step\)/';
 var exec = require('child_process').exec;
+var musicmetadata = require('musicmetadata');
+
+var dir = '/Users/wangstabill/Downloads/A\ Perfect\ Circle\ \(Thirteenth\ Step\)/';
 
 function escapeshell (cmd) {
   return cmd.replace(/(["\s'$`\\\(\)])/g,'\\$1');
 };
 
+function flatten (obj) {
+  return '' + obj.no + ' of ' + obj.of;
+}
+
 exports.index = function(req, res){
-  res.render('index', {
-    title: 'Jukebox',
-    files: fs.readdirSync(dir)
+  var filenames = fs.readdirSync(dir);
+  var files = [];
+  
+  filenames.forEach(function (filename) {
+    var parser = new musicmetadata(fs.createReadStream(dir + filename));
+    parser.on('metadata', function (result) {
+      // clean up
+      delete result.picture;
+      result.track = flatten(result.track);
+      result.disk = flatten(result.disk);
+      result.filename = filename;
+      
+      files.push(result);
+      
+      // On the last file
+      if (files.length === filenames.length) {
+        res.render('index', {
+          title: 'Jukebox',
+          files: files
+        });
+      }
+    });
   });
 };
 

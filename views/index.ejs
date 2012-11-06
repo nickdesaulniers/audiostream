@@ -9,9 +9,30 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-    <% for (var i = 0, len = files.length; i < len; i++) { %>
-      <input type="button" value="<%= files[i] %>"></input>
-      <br />
-    <% } %>
+    <table>
+      <% for (var key in files[0]) { %>
+        <% if (files[0].hasOwnProperty(key) && key !== 'filename') { %>
+          <th><%= key %></th>
+        <% } %>
+      <% } %>
+      <% for (var i = 0, len = files.length; i < len; i++) { %>
+        <tr>
+          <% for (var key in files[i]) { %>
+            <% if (files[i].hasOwnProperty(key) && key !== 'filename') { %>
+              <td>
+                <% if (key === 'title') { %>
+                  <a class="song_title"
+                  href="/transcode/<%= files[i].filename.replace(/\.mp3$/, '.ogg') %>">
+                <% } %>
+                <%= files[i][key] %>
+                <% if (key === 'title') { %>
+                  </a>
+                <% } %>
+              </td>
+            <% } %>
+          <% } %>
+        </tr>
+      <% } %>
+    </table>
   </body>
 </html>
