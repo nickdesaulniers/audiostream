@@ -7,13 +7,14 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , config = require('./config/config');
 
 var app = express();
 
 app.configure(function(){
   // HTTP Basic Authentication
-  app.use(express.basicAuth('username', 'password'));
+  app.use(express.basicAuth(config.username, config.password));
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');

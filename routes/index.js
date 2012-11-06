@@ -1,8 +1,12 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
 var musicmetadata = require('musicmetadata');
+var dirs = require('../config/config').music_folders;
+var dir = escapejson(dirs[0]);
 
-var dir = '/Users/wangstabill/Downloads/A\ Perfect\ Circle\ \(Thirteenth\ Step\)/';
+function escapejson (filename) {
+  return filename.replace(/\\/g, '');
+}
 
 function escapeshell (cmd) {
   return cmd.replace(/(["\s'$`\\\(\)])/g,'\\$1');
