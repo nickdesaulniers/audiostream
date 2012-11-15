@@ -9,3 +9,11 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+#controls {
+  margin: 20px 0;
+}
+
+#controls progress {
+  width: 200px;
+}
