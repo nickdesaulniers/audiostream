@@ -4,9 +4,6 @@ var musicmetadata = require('musicmetadata');
 var path = require('path');
 var dirs = require('../config/config').music_folders.map(escapejson);
 var dir = escapejson(dirs[0]);
-var find = command('find');
-var grep = command('grep');
-var xargs = command('xargs');
 
 function escapejson (filename) {
   return filename.replace(/\\/g, '');
@@ -18,12 +15,6 @@ function escapeshell (cmd) {
 
 function flatten (obj) {
   return '' + obj.no + ' of ' + obj.of;
-}
-
-function command (command_name) {
-  return function (args) {
-    child_process.spawn(command_name, args);
-  }
 }
 
 exports.index = function(req, res){
@@ -67,9 +58,11 @@ exports.transcode = function (req, res) {
   var actualFile = requestedFile.replace(/\.(mp3|ogg|wav)$/, '.mp3');
   
   
-  //var command = 'ffmpeg -i ' + escapeshell(dir + actualFile) +
-  //  ' -acodec libvorbis -map 0:0 library/' + escapeshell(requestedFile);
-  //console.log('command to run: \n', command);
+  var command = 
+    'find ' + dirs.map(escapeshell).join(' ') + ' -name ' +
+    escapeshell(actualFile) + ' -print0 | ' +
+    'xargs -0 -J actualFile ffmpeg -i actualFile -acodec libvorbis -map 0:0 library/' +
+    escapeshell(requestedFile);
 
   fs.exists('library/' + requestedFile, function (exists) {
     if (exists) {
