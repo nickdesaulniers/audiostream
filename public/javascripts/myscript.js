@@ -3,10 +3,9 @@ $(document).ready(function () {
     // This is super brittle
     aaSorting: [[1, 'asc'], [3, 'asc']]
   });
-  $('a.song_title').click(function (e) {
+  $(document).on('click', 'a.song_title', function (e) {
     e.preventDefault();
     var filename = this.href.replace(/.+\/transcode\//, '');
-    //var filename = encodeURIComponent(this.value).replace(/\.mp3$/, '.ogg');
     var audio = document.createElement('audio');
     audio.setAttribute('controls', null);
     var listener = audio.addEventListener('canplay', function (e) {
