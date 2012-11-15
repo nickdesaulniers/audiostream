@@ -3,26 +3,9 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  text-decoration: none;
 }
 
-table {
-  border-collapse: collapse;
-  border-top: 1px solid #E5EFF8;
-  border-right: 1px solid #E5EFF8;
-  margin: 1em auto;
-}
-
-th {
-  background: #F4F9FE;
-  text-align: center;
-  color: #66A3D3;
-}
-
-td {
-  color: #678197;
-  border-bottom: 1px solid #E5Eff8;
-  border-left: 1px solid #E5Eff8;
-  padding: 0.3em 1em;
-  text-align: center;
+a:hover {
+  text-decoration: underline;
 }

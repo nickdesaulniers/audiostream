@@ -1,4 +1,8 @@
 $(document).ready(function () {
+  $('#table_id').dataTable({
+    // This is super brittle
+    aaSorting: [[1, 'asc'], [3, 'asc']]
+  });
   $('a.song_title').click(function (e) {
     e.preventDefault();
     var filename = this.href.replace(/.+\/transcode\//, '');
