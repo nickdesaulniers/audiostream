@@ -33,8 +33,8 @@ Modify `config/config.json` to add your music library's absolute paths.  Notice 
 
 ## Contributing
 * Bug reports are always welcome!  Please file them as issues on the github page: https://github.com/nickdesaulniers/audiostream/issues
-* Do NOT just fork and send a pull request!!!  If there is an issue in the issue tracker that you want to tackle, feel free to to fork, and issue a pull request.  Otherwise, please first create an issue, and wait for it to be approved.  This will allow you to 'fail sooner,' as in have your patch declined before you write it, if it's not in line with the goals of this project.
-  1. Is there an issue in the issue tracker you want to tackle? If yes, goto 4.
+* Do NOT just fork and send a pull request!!!  If there is an issue in the issue tracker that you want to tackle, and it has been accepted, feel free to to fork, and issue a pull request.  Otherwise, please first create an issue, and wait for it to be approved.  This will allow you to 'fail sooner,' as in have your patch declined before you write it, if it's not in line with the goals of this project.
+  1. Is there an issue in the issue tracker you want to tackle, that has been accepted? If yes, goto 4.
   2. Create issue in the issue tracker, and wait for it to be accepted or declined.
   3. Was the issue declined?  If yes, goto 1.
   4. Fork.
