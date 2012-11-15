@@ -12,7 +12,7 @@ Stream and transcode your music library.  The goal is to make software you want 
 
 Currently only Unix like operating systems are supported for the server.  This is because audiostream uses Unix commands such as find and xargs, under the hood.
 You need to install ffmpeg and have it in your path so that typing `which ffmpeg` in your command line produces an absolute path.
-Node.js is super cool, and so is javascript.
+Node.js is used to demonstrate it can be the backend for awesome apps.
 
 ### Download source
 `$ git clone git://github.com/nickdesaulniers/audiostream.git && cd audiostream`
