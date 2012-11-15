@@ -8,7 +8,6 @@ $(document).ready(function () {
     e.preventDefault();
     div.innerHTML = '';
     div.appendChild(document.createElement('progress'));
-    var filename = this.href.replace(/.+\/transcode\//, '');
     var audio = document.createElement('audio');
     audio.setAttribute('controls', null);
     var listener = audio.addEventListener('canplay', function (e) {
@@ -16,6 +15,7 @@ $(document).ready(function () {
       div.appendChild(audio);
       audio.removeEventListener('canplay', listener);
     });
-    audio.src = '/transcode/' + filename;
+    var supported_extension = 'ogg';
+    audio.src = '/transcode/' + supported_extension + '/' + this.dataset.filename;
   });
 });

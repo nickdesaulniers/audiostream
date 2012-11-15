@@ -3,7 +3,7 @@ var child_process = require('child_process');
 var musicmetadata = require('musicmetadata');
 var path = require('path');
 var dirs = require('../config/config').music_folders.map(escapejson);
-var dir = escapejson(dirs[0]);
+var extension_re = /\.(mp3|ogg|wav)$/;
 
 function escapejson (filename) {
   return filename.replace(/\\/g, '');
@@ -24,7 +24,7 @@ exports.index = function(req, res){
     var files = [];
     
     dir_list.forEach(function (file) {
-      if (/\.(mp3|ogg|wav)$/.test(file)) {
+      if (extension_re.test(file)) {
         filenames.push(file);
       }
     });
@@ -54,9 +54,9 @@ exports.index = function(req, res){
 
 exports.transcode = function (req, res) {
   var child = null;
-  var requestedFile = req.params.filename;
-  var actualFile = requestedFile.replace(/\.(mp3|ogg|wav)$/, '.mp3');
-  
+  var actualFile = req.params.filename;
+  var requestedFile = actualFile.replace(extension_re, '.' +
+  req.params.extension);
   
   var command = 
     'find ' + dirs.map(escapeshell).join(' ') + ' -name ' +
@@ -72,6 +72,9 @@ exports.transcode = function (req, res) {
       console.log('file does not exist, transcoding needed');
       child = child_process.exec(command, function (error, stdout, stderr) {
         console.log('in child process');
+        if (error) return console.log(error);
+        //if (stderr) return console.log(stderr);
+        
         res.sendfile('library/' + requestedFile);
         console.log('sent');
         child.kill('SIGTERM');

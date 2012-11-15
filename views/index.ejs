@@ -31,8 +31,7 @@
               <% if (files[i].hasOwnProperty(key) && key !== 'filename') { %>
                 <td>
                   <% if (key === 'title') { %>
-                    <a class="song_title"
-                    href="/transcode/<%= files[i].filename.replace(/\.mp3$/, '.ogg') %>">
+                    <a class="song_title" href="#" data-filename="<%= files[i].filename %>">
                   <% } %>
                   <%= files[i][key] %>
                   <% if (key === 'title') { %>
