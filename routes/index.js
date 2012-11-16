@@ -3,7 +3,8 @@ var child_process = require('child_process');
 var musicmetadata = require('musicmetadata');
 var path = require('path');
 var dirs = require('../config/config').music_folders.map(escapejson);
-var extension_re = /\.(mp3|ogg|wav)$/;
+var supported_extension_re = /\.(mp3|ogg|wav)$/;
+var file_extension_re = /\.([0-9a-z]+)(?:[\?#]|$)/i;
 
 function escapejson (filename) {
   return filename.replace(/\\/g, '');
@@ -24,7 +25,7 @@ exports.index = function(req, res){
     var files = [];
     
     dir_list.forEach(function (file) {
-      if (extension_re.test(file)) {
+      if (supported_extension_re.test(file)) {
         filenames.push(file);
       }
     });
@@ -55,25 +56,47 @@ exports.index = function(req, res){
 exports.transcode = function (req, res) {
   var child = null;
   var actualFile = req.params.filename;
-  var requestedFile = actualFile.replace(extension_re, '.' +
+  var requestedFile = actualFile.replace(supported_extension_re, '.' +
   req.params.extension);
   
-  var command = 
-    'find ' + dirs.map(escapeshell).join(' ') + ' -name ' +
-    escapeshell(actualFile) + ' -print0 | ' +
-    'xargs -0 -J actualFile ffmpeg -i actualFile -acodec libvorbis -map 0:0 library/' +
-    escapeshell(requestedFile);
-
+  var find_command = 'find ' + dirs.map(escapeshell).join(' ') + ' -name ' +
+    escapeshell(actualFile);
+  var transcode_command =  find_command + ' -print0 | ' +
+    'xargs -0 -J actualFile ffmpeg -i actualFile -acodec libvorbis -map 0:0 ' +
+    'library/' + escapeshell(requestedFile);
+  var chosen_command = transcode_command;
+  var needsTranscoding = true;
+  
+  console.log('Requested File: ' + requestedFile);
+  console.log('Actual File: ' + actualFile);
+  
+  // Check if the file has been transcoded, doesn't need to, or does
   fs.exists('library/' + requestedFile, function (exists) {
     if (exists) {
+      console.log('found ' + requestedFile + ' in library/');
       res.sendfile('library/' + requestedFile);
-      console.log('file sent');
+      console.log('sent');
     } else {
-      console.log('file does not exist, transcoding needed');
-      child = child_process.exec(command, function (error, stdout, stderr) {
-        console.log('in child process');
+      console.log('did not find ' + requestedFile + ' in library/');
+      
+      // Check if file doesn't need transcoding
+      if (actualFile === requestedFile) {
+        chosen_command = find_command;
+        needsTranscoding = false;
+      }
+      
+      console.log(needsTranscoding ? 'Transcoding' : 'Symlinking');
+      child = child_process.exec(chosen_command,
+      function (error, stdout, stderr) {
+        var filename;
         if (error) return console.log(error);
         //if (stderr) return console.log(stderr);
+        
+        // Symlink it!
+        if (!needsTranscoding) {
+          filepath = stdout.split('\n')[0];
+          fs.symlinkSync(filepath, 'library/' + requestedFile);
+        }
         
         res.sendfile('library/' + requestedFile);
         console.log('sent');

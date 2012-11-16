@@ -22,14 +22,34 @@ if (audio_supported) {
 }
 
 // Preferred transcoded extension
-var supported_extension = '';
+var preferred_extension = '';
 (function () {
-  if (ogg_supported) return supported_extension = 'ogg';
-  if (mp3_supported) return supported_extension = 'mp3';
-  if (aac_supported) return supported_extension = 'aac'; // m4a, .mp4 ???
-  if (wav_supported) return supported_extension = 'ogg';
+  if (ogg_supported) return preferred_extension = 'ogg';
+  if (mp3_supported) return preferred_extension = 'mp3';
+  if (aac_supported) return preferred_extension = 'aac'; // m4a, .mp4 ???
+  if (wav_supported) return preferred_extension = 'ogg';
   redirect('No support for ogg, mp3, aac, or wav');
 })();
+
+function isSupported (extString) {
+  switch (extString) {
+    case 'ogg': return ogg_supported;
+    case 'mp3': return mp3_supported;
+    case 'aac': return aac_supported;
+    case 'wav': return wav_supported;
+    default: return false;
+  }
+}
+
+var file_extension_re = /\.([0-9a-z]+)(?:[\?#]|$)/i;
+function getSupportedExt (filename) {
+  var ext = filename.match(file_extension_re)[1];
+  return isSupported(ext) ? ext : preferred_extension;
+}
+
+function getAudioSrc (filename) {
+  return '/transcode/' + getSupportedExt(filename) + '/' + filename;
+}
 
 $(document).ready(function () {
   $('#table_id').dataTable({
@@ -48,6 +68,6 @@ $(document).ready(function () {
       div.appendChild(audio);
       audio.removeEventListener('canplay', listener);
     });
-    audio.src = '/transcode/' + supported_extension + '/' + this.dataset.filename;
+    audio.src = getAudioSrc(this.dataset.filename);
   });
 });
