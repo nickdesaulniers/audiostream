@@ -3,6 +3,8 @@ var child_process = require('child_process');
 var musicmetadata = require('musicmetadata');
 var path = require('path');
 var dirs = require('../config/config').music_folders.map(escapejson);
+var FileMap = require('../lib/filemap').FileMap;
+
 var supported_extension_re = /\.(mp3|ogg|wav|aac)$/;
 var file_extension_re = /\.([0-9a-z]+)(?:[\?#]|$)/i;
 
@@ -19,36 +21,30 @@ function flatten (obj) {
 }
 
 exports.index = function(req, res){
-  child_process.execFile('find', dirs, function (error, stdout, stderr) {
-    var dir_list = stdout.split('\n');
-    var filenames = [];
-    var files = [];
-    
-    dir_list.forEach(function (file) {
-      if (supported_extension_re.test(file)) {
-        filenames.push(file);
+  var filemap = FileMap.retrieveAll();
+  var filemapKeys = Object.keys(filemap);
+  var files = [];
+  
+  filemapKeys.forEach(function (id) {
+    var filename = filemap[id];
+    var parser = new musicmetadata(fs.createReadStream(filename));
+    parser.on('metadata', function (result) {
+      // clean up
+      delete result.picture;
+      result.track = flatten(result.track);
+      result.disk = flatten(result.disk);
+      result.filename = path.basename(filename);
+      //result.songID = id;
+
+      files.push(result);
+
+      // On the last file
+      if (files.length === filemapKeys.length) {
+        res.render('index', {
+          title: 'Jukebox',
+          files: files
+        });
       }
-    });
-    
-    filenames.forEach(function (filename) {
-      var parser = new musicmetadata(fs.createReadStream(filename));
-      parser.on('metadata', function (result) {
-        // clean up
-        delete result.picture;
-        result.track = flatten(result.track);
-        result.disk = flatten(result.disk);
-        result.filename = path.basename(filename);
-
-        files.push(result);
-
-        // On the last file
-        if (files.length === filenames.length) {
-          res.render('index', {
-            title: 'Jukebox',
-            files: files
-          });
-        }
-      });
     });
   });
 };
