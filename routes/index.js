@@ -12,7 +12,7 @@ function escapejson (filename) {
 
 function escapeshell (cmd) {
   return cmd.replace(/(["\s'$`\\\(\)])/g,'\\$1');
-};
+}
 
 function flatten (obj) {
   return '' + obj.no + ' of ' + obj.of;
