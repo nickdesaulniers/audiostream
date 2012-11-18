@@ -15,7 +15,7 @@ You need to install ffmpeg and have it in your path so that typing `which ffmpeg
 Node.js is used to demonstrate it can be the backend for awesome apps.
 
 ### Download source
-`$ git clone git://github.com/nickdesaulniers/audiostream.git && cd audiostream`
+`$ git clone git://github.com/nickdesaulniers/audiostream.git && cd audiostream && npm install`
 
 ### Configure
 Modify `config/config.json` to add your music library's absolute paths.  Notice how for paths with spaces, the spaces and parentheses needs to be escaped (a single backslash), and for JSON the escape character needs to be escaped (two backslashes).  It would be nice to have part of the web interface handle this!
