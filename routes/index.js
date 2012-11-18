@@ -3,7 +3,7 @@ var child_process = require('child_process');
 var musicmetadata = require('musicmetadata');
 var path = require('path');
 var dirs = require('../config/config').music_folders.map(escapejson);
-var supported_extension_re = /\.(mp3|ogg|wav)$/;
+var supported_extension_re = /\.(mp3|ogg|wav|aac)$/;
 var file_extension_re = /\.([0-9a-z]+)(?:[\?#]|$)/i;
 
 function escapejson (filename) {
@@ -59,10 +59,23 @@ exports.transcode = function (req, res) {
   var requestedFile = actualFile.replace(supported_extension_re, '.' +
   req.params.extension);
   
+  // encoding library
+  // ogg -> libvorbis
+  // aac -> libvo_aacenc // m4a
+  // wav -> don't need -acodec anything, just .wav
+  // mp3 -> libmp3lame
+  var encoder = '';
+  switch (req.params.extension) {
+    case 'ogg': encoder = ' -acodec libvorbis'; break;
+    case 'aac': encoder = ' -acodec libvo_aacenc'; break;
+    case 'wav': break;
+    case 'mp3': encoder = ' -acodec libmp3lame'; break;
+  }
+  
   var find_command = 'find ' + dirs.map(escapeshell).join(' ') + ' -name ' +
     escapeshell(actualFile);
   var transcode_command =  find_command + ' -print0 | ' +
-    'xargs -0 -J actualFile ffmpeg -i actualFile -acodec libvorbis -map 0:0 ' +
+    'xargs -0 -J actualFile ffmpeg -i actualFile' + encoder + ' -map 0:0 ' +
     'library/' + escapeshell(requestedFile);
   var chosen_command = transcode_command;
   var needsTranscoding = true;
