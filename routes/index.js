@@ -8,7 +8,7 @@ function escapeshell (cmd) {
 }
 
 function flatten (obj) {
-  return '' + obj.no + ' of ' + obj.of;
+  return obj.no > 0 || obj.of > 0 ? '' + obj.no + ' of ' + obj.of : '';
 }
 
 exports.index = function(req, res){
@@ -20,14 +20,18 @@ exports.index = function(req, res){
     var filename = filemap[id];
     var parser = new musicmetadata(fs.createReadStream(filename));
     parser.on('metadata', function (result) {
-      // clean up (lots of object modification: bad)
-      delete result.picture;
-      result.track = flatten(result.track);
-      result.disk = flatten(result.disk);
-      result.songID = id;
-      result.ext = filename.replace(/.+\./, '');
-
-      files.push(result);
+      files.push({
+        songID: id,
+        ext: filename.replace(/.+\./, ''),
+        title: result.title || filename.replace(/.+\//, ''),
+        artist: result.artist, // Array
+        albumartist: result.albumartist, // Array
+        album: result.album,
+        year: result.year > 0 ? result.year : '',
+        track: flatten(result.track),
+        genre: result.genre, // Array
+        disk: flatten(result.disk)
+      });
 
       // On the last file
       if (files.length === filemapKeys.length) {
