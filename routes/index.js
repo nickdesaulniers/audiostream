@@ -32,7 +32,7 @@ exports.index = function(req, res){
       // On the last file
       if (files.length === filemapKeys.length) {
         res.render('index', {
-          title: 'Jukebox',
+          title: 'AudioStream',
           files: files
         });
       }
