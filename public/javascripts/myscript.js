@@ -42,13 +42,12 @@ function isSupported (extString) {
 }
 
 var file_extension_re = /\.([0-9a-z]+)(?:[\?#]|$)/i;
-function getSupportedExt (filename) {
-  var ext = filename.match(file_extension_re)[1];
+function getSupportedExt (ext) {
   return isSupported(ext) ? ext : preferred_extension;
 }
 
-function getAudioSrc (filename) {
-  return '/transcode/' + getSupportedExt(filename) + '/' + filename;
+function getAudioSrc (dataset) {
+  return '/transcode/' + getSupportedExt(dataset.ext) + '/' + dataset.songid;
 }
 
 $(document).ready(function () {
@@ -68,6 +67,6 @@ $(document).ready(function () {
       div.appendChild(audio);
       audio.removeEventListener('canplay', listener);
     });
-    audio.src = getAudioSrc(this.dataset.filename);
+    audio.src = getAudioSrc(this.dataset);
   });
 });

@@ -1,7 +1,6 @@
 var fs = require('fs');
 var child_process = require('child_process');
 var musicmetadata = require('musicmetadata');
-var path = require('path');
 var dirs = require('../config/config').music_folders.map(escapejson);
 var FileMap = require('../lib/filemap').FileMap;
 
@@ -29,12 +28,12 @@ exports.index = function(req, res){
     var filename = filemap[id];
     var parser = new musicmetadata(fs.createReadStream(filename));
     parser.on('metadata', function (result) {
-      // clean up
+      // clean up (lots of object modification: bad)
       delete result.picture;
       result.track = flatten(result.track);
       result.disk = flatten(result.disk);
-      result.filename = path.basename(filename);
-      //result.songID = id;
+      result.songID = id;
+      result.ext = filename.replace(/.+\./, '');
 
       files.push(result);
 
@@ -50,10 +49,31 @@ exports.index = function(req, res){
 };
 
 exports.transcode = function (req, res) {
-  var child = null;
-  var actualFile = req.params.filename;
-  var requestedFile = actualFile.replace(supported_extension_re, '.' +
-  req.params.extension);
+  // Check if original file ext is in filemap
+  var file_path = FileMap.retrieve(req.params.fileID);
+  if (!file_path) {
+    console.log('original file was not in filemap');
+    return res.send(404);
+  }
+  
+  // was the requested extension the file's current extension?
+  var requested_extension = req.params.extension;
+  var actual_extension = file_path.replace(/.+\./, '');
+  if (requested_extension === actual_extension) {
+    console.log('The file\'s actual extension was requested');
+    return res.sendfile(file_path);
+  }
+  
+  // was the requested extension previously encoded?
+  var previous_file_name = req.params.fileID + '.' + requested_extension;
+  var previous_file_path = FileMap.previously_transcoded(previous_file_name);
+  if (previous_file_path) {
+    console.log('Found previously encoded version in library/');
+    return res.sendfile(previous_file_path);
+  }
+  
+  // Transcoding needed
+  console.log('Transcoding ' + actual_extension + ' to ' + requested_extension);
   
   // encoding library
   // ogg -> libvorbis
@@ -68,49 +88,15 @@ exports.transcode = function (req, res) {
     case 'mp3': encoder = ' -acodec libmp3lame'; break;
   }
   
-  var find_command = 'find ' + dirs.map(escapeshell).join(' ') + ' -name ' +
-    escapeshell(actualFile);
-  var transcode_command =  find_command + ' -print0 | ' +
-    'xargs -0 -J actualFile ffmpeg -i actualFile' + encoder + ' -map 0:0 ' +
-    'library/' + escapeshell(requestedFile);
-  var chosen_command = transcode_command;
-  var needsTranscoding = true;
-  
-  console.log('Requested File: ' + requestedFile);
-  console.log('Actual File: ' + actualFile);
-  
-  // Check if the file has been transcoded, doesn't need to, or does
-  fs.exists('library/' + requestedFile, function (exists) {
-    if (exists) {
-      console.log('found ' + requestedFile + ' in library/');
-      res.sendfile('library/' + requestedFile);
-      console.log('sent');
-    } else {
-      console.log('did not find ' + requestedFile + ' in library/');
-      
-      // Check if file doesn't need transcoding
-      if (actualFile === requestedFile) {
-        chosen_command = find_command;
-        needsTranscoding = false;
-      }
-      
-      console.log(needsTranscoding ? 'Transcoding' : 'Symlinking');
-      child = child_process.exec(chosen_command,
-      function (error, stdout, stderr) {
-        var filename;
-        if (error) return console.log(error);
-        //if (stderr) return console.log(stderr);
-        
-        // Symlink it!
-        if (!needsTranscoding) {
-          filepath = stdout.split('\n')[0];
-          fs.symlinkSync(filepath, 'library/' + requestedFile);
-        }
-        
-        res.sendfile('library/' + requestedFile);
-        console.log('sent');
-        child.kill('SIGTERM');
-      });
-    }
+  var command =
+    'ffmpeg -i ' + escapeshell(file_path) + encoder + ' -map 0:0 library/' +
+    previous_file_name;
+
+  child = child_process.exec(command, function (error, stdout, stderr) {
+    if (error) return console.log(error);
+    //if (stderr) return console.log(stderr);
+    console.log('transcoded');
+    res.sendfile('library/' + previous_file_name);
+    child.kill('SIGTERM');
   });
 }

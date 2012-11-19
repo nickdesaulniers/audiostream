@@ -18,7 +18,7 @@
       <thead>
         <tr>
           <% for (var key in files[0]) { %>
-            <% if (files[0].hasOwnProperty(key) && key !== 'filename') { %>
+            <% if (key !== 'songID' && key !== 'ext') { %>
               <th><%= key %></th>
             <% } %>
           <% } %>
@@ -28,10 +28,10 @@
         <% for (var i = 0, len = files.length; i < len; i++) { %>
           <tr>
             <% for (var key in files[i]) { %>
-              <% if (files[i].hasOwnProperty(key) && key !== 'filename') { %>
+              <% if (key !== 'songID' && key !== 'ext') { %>
                 <td>
                   <% if (key === 'title') { %>
-                    <a class="song_title" href="#" data-filename="<%= files[i].filename %>">
+                    <a class="song_title" href="#" data-songid="<%= files[i].songID %>" data-ext="<%= files[i].ext %>">
                   <% } %>
                   <%= files[i][key] %>
                   <% if (key === 'title') { %>
