@@ -1,15 +1,7 @@
 var fs = require('fs');
 var child_process = require('child_process');
 var musicmetadata = require('musicmetadata');
-var dirs = require('../config/config').music_folders.map(escapejson);
 var FileMap = require('../lib/filemap').FileMap;
-
-var supported_extension_re = /\.(mp3|ogg|wav|aac)$/;
-var file_extension_re = /\.([0-9a-z]+)(?:[\?#]|$)/i;
-
-function escapejson (filename) {
-  return filename.replace(/\\/g, '');
-}
 
 function escapeshell (cmd) {
   return cmd.replace(/(["\s'$`\\\(\)])/g,'\\$1');
