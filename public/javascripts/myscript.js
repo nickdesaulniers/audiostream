@@ -68,5 +68,7 @@ $(document).ready(function () {
       audio.removeEventListener('canplay', listener);
     });
     audio.src = getAudioSrc(this.dataset);
+    // Necessary for iPhone
+    audio.load();
   });
 });
