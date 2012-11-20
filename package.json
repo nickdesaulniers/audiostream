@@ -27,5 +27,12 @@
     "browser"
   ],
   "author": "Nick Desaulniers",
-  "license": "MPL2.0"
+  "license": "MPL2.0",
+  "homepage": "https://github.com/nickdesaulniers/audiostream",
+  "bugs": {
+    "url": "http://github.com/nickdesaulniers/audiostream/issues" 
+  },
+  "engines": {
+    "node": ">=0.8.14"
+  }
 }
