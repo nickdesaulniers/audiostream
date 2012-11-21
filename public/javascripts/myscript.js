@@ -1,7 +1,7 @@
 // Detect what containers are supported
 // http://diveintohtml5.com/everything.html
 var audio_supported = mp3_supported = vorbis_supported = wav_supported =
-  aac_supported = false;
+  m4a_supported = false;
 
 function redirect (message) {
   alert(message);
@@ -15,7 +15,7 @@ if (audio_supported) {
   ogg_supported =
     !!a.canPlayType('audio/ogg; codecs="vorbis"').replace(/no/, '');
   wav_supported = !!a.canPlayType('audio/wav; codecs="1"').replace(/no/, '');
-  aac_supported =
+  m4a_supported =
     !!a.canPlayType('audio/mp4; codecs="mp4a.40.2"').replace(/no/, '');
 } else {
   redirect('HTML5 audio not supported.');
@@ -26,22 +26,21 @@ var preferred_extension = '';
 (function () {
   if (ogg_supported) return preferred_extension = 'ogg';
   if (mp3_supported) return preferred_extension = 'mp3';
-  if (aac_supported) return preferred_extension = 'aac'; // m4a, .mp4 ???
+  if (m4a_supported) return preferred_extension = 'm4a';
   if (wav_supported) return preferred_extension = 'ogg';
-  redirect('No support for ogg, mp3, aac, or wav');
+  redirect('No support for ogg, mp3, m4a, or wav');
 })();
 
 function isSupported (extString) {
   switch (extString) {
     case 'ogg': return ogg_supported;
     case 'mp3': return mp3_supported;
-    case 'aac': return aac_supported;
+    case 'm4a': return m4a_supported;
     case 'wav': return wav_supported;
     default: return false;
   }
 }
 
-var file_extension_re = /\.([0-9a-z]+)(?:[\?#]|$)/i;
 function getSupportedExt (ext) {
   return isSupported(ext) ? ext : preferred_extension;
 }
