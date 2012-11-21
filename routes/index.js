@@ -2,10 +2,7 @@ var fs = require('fs');
 var child_process = require('child_process');
 var musicmetadata = require('musicmetadata');
 var FileMap = require('../lib/filemap').FileMap;
-
-function escapeshell (cmd) {
-  return cmd.replace(/(["\s'$`\\\(\)])/g,'\\$1');
-}
+var convert = require('../lib/convert');
 
 function flatten (obj) {
   return obj.no > 0 || obj.of > 0 ? '' + obj.no + ' of ' + obj.of : '';
@@ -52,7 +49,7 @@ exports.transcode = function (req, res) {
     return res.send(404);
   }
   
-  // was the requested extension the file's current extension?
+  // Was the requested extension the file's current extension?
   var requested_extension = req.params.extension;
   var actual_extension = file_path.replace(/.+\./, '');
   if (requested_extension === actual_extension) {
@@ -60,7 +57,7 @@ exports.transcode = function (req, res) {
     return res.sendfile(file_path);
   }
   
-  // was the requested extension previously encoded?
+  // Was the requested extension previously encoded?
   var previous_file_name = req.params.fileID + '.' + requested_extension;
   var previous_file_path = FileMap.previously_transcoded(previous_file_name);
   if (previous_file_path) {
@@ -70,29 +67,13 @@ exports.transcode = function (req, res) {
   
   // Transcoding needed
   console.log('Transcoding ' + actual_extension + ' to ' + requested_extension);
-  
-  // encoding library
-  // ogg -> libvorbis
-  // aac -> libvo_aacenc // m4a
-  // wav -> don't need -acodec anything, just .wav
-  // mp3 -> libmp3lame
-  var encoder = '';
-  switch (req.params.extension) {
-    case 'ogg': encoder = ' -acodec libvorbis'; break;
-    case 'aac': encoder = ' -acodec libvo_aacenc'; break;
-    case 'wav': break;
-    case 'mp3': encoder = ' -acodec libmp3lame'; break;
-  }
-  
-  var command =
-    'ffmpeg -i ' + escapeshell(file_path) + encoder + ' -map 0:0 library/' +
-    previous_file_name;
-
-  child = child_process.exec(command, function (error, stdout, stderr) {
-    if (error) return console.log(error);
-    //if (stderr) return console.log(stderr);
+  convert(file_path, requested_extension, previous_file_name,
+  function (err, transcoded_file_path) {
+    if (err) {
+      console.log('error');
+      return res.send(500);
+    }
     console.log('transcoded');
-    res.sendfile('library/' + previous_file_name);
-    child.kill('SIGTERM');
+    res.sendfile(transcoded_file_path);
   });
 }
