@@ -66,6 +66,13 @@ $(document).ready(function () {
       div.appendChild(audio);
       audio.removeEventListener('canplay', listener);
     });
+    audio.addEventListener('error', function (e) {
+      div.innerHTML = '';
+      var p = document.createElement('p');
+      p.appendChild(document.createTextNode('Error loading file'));
+      p.setAttribute('class', 'error');
+      div.appendChild(p);
+    });
     audio.src = getAudioSrc(this.dataset);
     // Necessary for iPhone
     audio.load();

@@ -17,3 +17,7 @@ a:hover {
 #controls progress {
   width: 200px;
 }
+
+p.error {
+  color: red;
+}
