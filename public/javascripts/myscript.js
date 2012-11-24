@@ -50,10 +50,6 @@ function getAudioSrc (dataset) {
 }
 
 $(document).ready(function () {
-  $('#table_id').dataTable({
-    // This is super brittle
-    aaSorting: [[1, 'asc'], [3, 'asc']]
-  });
   $(document).on('click', 'a.song_title', function (e) {
     var div = document.getElementById('controls');
     e.preventDefault();

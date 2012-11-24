@@ -8,7 +8,11 @@ function flatten (obj) {
   return obj.no > 0 || obj.of > 0 ? '' + obj.no + ' of ' + obj.of : '';
 }
 
-exports.index = function(req, res){
+exports.index = function (req, res) {
+  res.sendfile('public/pages/index.html');
+}
+
+exports.list = function(req, res){
   var filemap = FileMap.retrieveAll();
   var filemapKeys = Object.keys(filemap);
   var files = [];
@@ -32,10 +36,7 @@ exports.index = function(req, res){
 
       // On the last file
       if (files.length === filemapKeys.length) {
-        res.render('index', {
-          title: 'AudioStream',
-          files: files
-        });
+        res.send(files);
       }
     });
   });

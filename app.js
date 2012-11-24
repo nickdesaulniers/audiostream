@@ -30,6 +30,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/list', routes.list);
 app.get('/transcode/:extension/:fileID', routes.transcode);
 
 http.createServer(app).listen(app.get('port'), function(){

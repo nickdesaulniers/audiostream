@@ -18,6 +18,10 @@ a:hover {
   width: 200px;
 }
 
+#table_id {
+  display: none;
+}
+
 p.error {
   color: red;
 }
