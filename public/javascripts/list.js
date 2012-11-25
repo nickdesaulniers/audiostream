@@ -10,7 +10,17 @@ $(document).ready(function () {
   $.getJSON('/list', function (data) {
     for (var i = 0, len = data.length; i < len; i++) {
       var row = document.createElement('tr');
-      row.appendChild(insertInNewTd(data[i].title));
+      var td = document.createElement('td');
+      var a = document.createElement('a');
+
+      a.setAttribute('href', '#');
+      a.setAttribute('class', 'song_title')
+      a.setAttribute('data-songid', data[i].songID);
+      a.setAttribute('data-ext', data[i].ext);
+      a.appendChild(document.createTextNode(data[i].title));
+      td.appendChild(a);
+      row.appendChild(td);
+      
       row.appendChild(insertInNewTd(data[i].artist));
       row.appendChild(insertInNewTd(data[i].albumartist));
       row.appendChild(insertInNewTd(data[i].album));
