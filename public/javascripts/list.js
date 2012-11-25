@@ -19,6 +19,7 @@ function insertSongInNewTd (title, id, ext) {
 $(document).ready(function () {
   var table = document.getElementById('table_id');
   var target = table.getElementsByTagName('tbody')[0];
+  var fragment = document.createDocumentFragment();
   $.getJSON('/list', function (data) {
     for (var i = 0, len = data.length; i < len; i++) {
       var row = document.createElement('tr');
@@ -31,8 +32,9 @@ $(document).ready(function () {
       row.appendChild(insertTextInNewTd(song.track));
       row.appendChild(insertTextInNewTd(song.genre));
       row.appendChild(insertTextInNewTd(song.disk));
-      target.appendChild(row);
+      fragment.appendChild(row);
     }
+    target.appendChild(fragment);
     $('#table_id').dataTable({
       aaSorting: [[1, 'asc'], [3, 'asc']]
     }).fadeIn(500);
