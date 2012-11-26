@@ -24,7 +24,7 @@ $(document).ready(function () {
     for (var i = 0, len = data.length; i < len; i++) {
       var row = document.createElement('tr');
       var song = data[i];
-      row.appendChild(insertSongInNewTd(song.title, song.songId, song.ext));
+      row.appendChild(insertSongInNewTd(song.title, song.songID, song.ext));
       row.appendChild(insertTextInNewTd(song.artist));
       row.appendChild(insertTextInNewTd(song.albumartist));
       row.appendChild(insertTextInNewTd(song.album));
