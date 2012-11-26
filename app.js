@@ -12,6 +12,7 @@ var express = require('express')
 var app = express();
 
 app.configure(function(){
+  app.use(express.compress());
   // HTTP Basic Authentication
   app.use(express.basicAuth(config.username, config.password));
   app.set('port', process.env.PORT || 3000);
