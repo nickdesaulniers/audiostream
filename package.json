@@ -2,7 +2,8 @@
   "name": "audiostream",
   "version": "0.0.2",
   "scripts": {
-    "start": "node app"
+    "start": "node app",
+    "empty": "rm library/*"
   },
   "dependencies": {
     "express": "3.0.1",
