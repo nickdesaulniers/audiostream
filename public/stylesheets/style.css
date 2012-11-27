@@ -1,5 +1,6 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px 'Open Sans', sans-serif;
+  background: #69F;
 }
 
 a {
@@ -8,6 +9,18 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+div#welcome img {
+  margin-top: -50px;
+  position: fixed;
+  width: 70%;
+  min-width: 1000px;
+  z-index: -1;
+}
+
+thead tr td {
+  color: white;
 }
 
 #controls {

@@ -38,6 +38,6 @@ $(document).ready(function () {
     $('#table_id').dataTable({
       aaSorting: [[1, 'asc'], [3, 'asc']]
     }).fadeIn(500);
-    $('div#controls progress:first').remove();
+    $('div#controls img:first').remove();
   });
 });

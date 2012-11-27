@@ -51,10 +51,13 @@ function getAudioSrc (dataset) {
 
 $(document).ready(function () {
   $(document).on('click', 'a.song_title', function (e) {
-    var div = document.getElementById('controls');
     e.preventDefault();
+    var div = document.getElementById('controls');
     div.innerHTML = '';
-    div.appendChild(document.createElement('progress'));
+    var img = document.createElement('img');
+    img.setAttribute('src', '/images/ajax-loader.gif');
+    img.setAttribute('alt', 'loading');
+    div.appendChild(img);
     var audio = document.createElement('audio');
     audio.setAttribute('controls', null);
     var listener = audio.addEventListener('canplay', function (e) {
