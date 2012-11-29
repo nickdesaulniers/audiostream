@@ -56,14 +56,17 @@ function noCache (data) {
 function validateCache (cached_songs, dataTable) {
   $.getJSON('/list', function (server_songs) {
     if (server_songs.length !== cached_songs.length ||
-    server_songs.toString().length !== cached_songs.toString().length ||
-    hex_md5(server_songs.toString()) !== hex_md5(cached_songs.toString())) {
+    server_songs.toString().length !== cached_songs.toString().length) {
       // Invalid Cache
       list(server_songs, dataTable);
       localStorage.setItem('song_cache', JSON.stringify(server_songs));
     }
     // Valid Cache
   });
+}
+
+function clearCache (songs) {
+  list(songs, true);
 }
 
 $(document).ready(function () {
@@ -77,5 +80,11 @@ $(document).ready(function () {
     return $.getJSON('/list', list);
   }
   // Cache hit
-  validateCache(song_cache, list(song_cache));
+  var dataTable = list(song_cache);
+  validateCache(song_cache, dataTable);
+  // Manually clear cache, for now
+  $(document).on('click', 'button#reset_cache', function (e) {
+    localStorage.removeItem('song_cache');
+    validateCache([], dataTable);
+  });
 });
