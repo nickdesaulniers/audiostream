@@ -1,37 +1,162 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>AudioStream</title>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
-    <link rel='stylesheet' href='/stylesheets/jquery.dataTables.css' />    
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="/javascripts/jquery-1.8.2.min.js"></script>
-    <script src="/javascripts/jquery.dataTables.min.js"></script>
-    <script src="/javascripts/list.js"></script>
-    <script src="/javascripts/myscript.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: purple;
+      }
+      header {
+        position: fixed;
+        top: 0;
+        height: 15%;
+        width: 100%;
+        background: orange;
+      }
+      section {
+        position: absolute;
+        width: 100%;
+        top: 15%;
+        height: 70%;
+        overflow-y: scroll;
+        background: cyan;
+      }
+      header nav, footer nav {
+        height: 100%;
+      }
+      header nav > div {
+        height: 100%;
+        float: left;
+        width: 33%;
+        background: pink;
+      }
+      header nav > div:nth-child(2) {
+        width: 34%;
+      }
+      header nav > div:first-child {
+        background: red;
+      }
+      header nav > div:last-child {
+        background: blue;
+      }
+      header nav > div > div {
+        padding-top: 20px;
+        width: 100px;
+        margin: 0 auto;
+        background: CornFlowerBlue;
+        text-align: center;
+      }
+      footer {
+        background: yellow;
+        position: fixed;
+        bottom: 0;
+        height: 15%;
+        width: 100%;
+        overflow: hidden;
+      }
+      footer nav > div {
+        float: left;
+        width: 20%;
+        height: 100%;
+        background: pink;
+      }
+      footer nav > div > div {
+        padding-top: 20px;
+        width: 75px;
+        margin: 0 auto;
+        text-align: center;
+        background: CornFlowerBlue;
+      }
+    </style>
+    <script defer>
+      
+    </script>
   </head>
   <body>
-    <div id="welcome">
-      <img src="/images/audiostream.svg" alt="logo" />
-      <h1>AudioStream</h1>
-      <p>Stream and transcode your music library</p>
-    </div>
-    <div id="controls"><img src="/images/ajax-loader.gif" alt="loading"/></div>
-    <table id="table_id">
-      <thead>
-        <tr>
-          <td>Title</td>
-          <td>Artist</td>
-          <td>Album Artist</td>
-          <td>Album</td>
-          <td>Year</td>
-          <td>Track</td>
-          <td>Genre</td>
-          <td>Disk</td>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <button id="reset_cache">Reset Cache</button>
+    <section>
+      <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+        <li>Lateralus</li>
+        <li>Parabola</li>
+        <li>Lost</li>
+      </ul>
+    </section>
+    <header>
+      <nav>
+        <div><div><a>Back</a></div></div>
+        <div><div><a>AudioStream</a></div></div>
+        <div><div><a>Now Playing</a></div></div>
+      </nav>
+    </header>
+    <footer>
+      <nav>
+        <div><div><a>Playlists</a></div></div>
+        <div><div><a>Artists</a></div></div>
+        <div><div><a>Songs</a></div></div>
+        <div><div><a>Albums</a></div></div>
+        <div><div><a>...</a></div></div>
+      </nav>
+    </footer>
   </body>
 </html>
