@@ -61,18 +61,22 @@ $(document).ready(function () {
     var audio = document.createElement('audio');
     audio.setAttribute('controls', null);
     var listener = audio.addEventListener('canplay', function (e) {
-      div.innerHTML = '';
-      div.appendChild(audio);
+      alert('canplay');
       audio.removeEventListener('canplay', listener);
     });
     audio.addEventListener('error', function (e) {
+      alert('error');
       div.innerHTML = '';
       var p = document.createElement('p');
       p.appendChild(document.createTextNode('Error loading file'));
       p.setAttribute('class', 'error');
       div.appendChild(p);
     });
-    audio.src = getAudioSrc(this.dataset);
+    var src = getAudioSrc(this.dataset);
+    
+    audio.src = src;
+    div.innerHTML = '';
+    div.appendChild(audio);
     // Necessary for iPhone
     audio.load();
   });
