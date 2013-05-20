@@ -14,7 +14,7 @@ var app = express();
 app.configure(function(){
   app.use(express.compress());
   // HTTP Basic Authentication
-  app.use(express.basicAuth(config.username, config.password));
+  //app.use(express.basicAuth(config.username, config.password));
   app.set('port', process.env.PORT || 3000);
   app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
   app.use(express.logger('dev'));
