@@ -68,13 +68,19 @@ exports.transcode = function (req, res) {
   
   // Transcoding needed
   console.log('Transcoding ' + actual_extension + ' to ' + requested_extension);
-  convert(file_path, requested_extension, previous_file_name,
-  function (err, transcoded_file_path) {
-    if (err) {
-      console.log('error');
-      return res.send(500);
-    }
-    console.log('transcoded');
-    res.sendfile(transcoded_file_path);
-  });
+  var transcode_args = {
+    file_path: file_path,
+    requested_extension: requested_extension,
+    transcoded_fstream: fs.createWriteStream('./library/' + previous_file_name),
+    res: res,
+    cb: function cb (code, stderr) {
+      if (code) {
+        console.error(stderr);
+        res.send(500);
+      } else {
+        console.log('transcoded');
+      }
+    },
+  };
+  convert(transcode_args);
 }

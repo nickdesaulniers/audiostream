@@ -54,17 +54,8 @@ $(document).ready(function () {
     e.preventDefault();
     var div = document.getElementById('controls');
     div.innerHTML = '';
-    var img = document.createElement('img');
-    img.setAttribute('src', '/images/ajax-loader.gif');
-    img.setAttribute('alt', 'loading');
-    div.appendChild(img);
     var audio = document.createElement('audio');
     audio.setAttribute('controls', null);
-    var listener = audio.addEventListener('canplay', function (e) {
-      div.innerHTML = '';
-      div.appendChild(audio);
-      audio.removeEventListener('canplay', listener);
-    });
     audio.addEventListener('error', function (e) {
       div.innerHTML = '';
       var p = document.createElement('p');
@@ -73,7 +64,9 @@ $(document).ready(function () {
       div.appendChild(p);
     });
     audio.src = getAudioSrc(this.dataset);
+    div.appendChild(audio);
     // Necessary for iPhone
     audio.load();
+    audio.play();
   });
 });
