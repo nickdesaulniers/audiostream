@@ -76,7 +76,6 @@ exports.transcode = function (req, res) {
     cb: function cb (code, stderr) {
       if (code) {
         console.error(stderr);
-        res.send(500);
       } else {
         console.log('transcoded');
       }
