@@ -93,6 +93,7 @@
       .duration {
       }
     </style>
+    <script src="javascripts/jquery-1.8.2.min.js"></script>
     <script defer>
       function createSongListing (song_name, artist, duration) {
         if (arguments.length !== 3) return;
@@ -115,6 +116,12 @@
           } else if (evt.target.scrollTop === 0) {
             console.log('Reached Top');
           }
+        });
+
+        $.getJSON('/list', function (songs) {
+          songs.forEach(function (song) {
+            createSongListing(song.title, song.artist[0], '10:10');
+          });
         });
       });
     </script>
