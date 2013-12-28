@@ -25,25 +25,23 @@ function list (songs, redoTable) {
     var row = document.createElement('tr');
     var song = songs[i];
     row.appendChild(insertSongInNewTd(song.title, song.songID, song.ext));
+    row.appendChild(insertTextInNewTd(song.duration));
     row.appendChild(insertTextInNewTd(song.artist));
-    row.appendChild(insertTextInNewTd(song.albumartist));
     row.appendChild(insertTextInNewTd(song.album));
     row.appendChild(insertTextInNewTd(song.year));
     row.appendChild(insertTextInNewTd(song.track));
-    row.appendChild(insertTextInNewTd(song.genre));
-    row.appendChild(insertTextInNewTd(song.disk));
     fragment.appendChild(row);
   }
-  
+
   if (redoTable) {
     redoTable.fnDestroy();
     target.innerHTML = '';
   }
-  
+
   target.appendChild(fragment);
   $('div#controls img:first').remove();
   return $('#table_id').dataTable({
-    aaSorting: [[1, 'asc'], [3, 'asc']]
+    aaSorting: [[2, 'asc'], [3, 'asc'], [5, 'asc']]
   }).css('width', '').fadeIn(500);
 }
 
@@ -88,3 +86,4 @@ $(document).ready(function () {
     validateCache([], dataTable);
   });
 });
+
