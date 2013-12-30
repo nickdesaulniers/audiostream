@@ -25,31 +25,7 @@ function buildSort () {
   };
 };
 
-function play (audio, ext, songID) {
-  audio.src = "/transcode/" + ext + "/" + songID;
-  audio.play();
-};
-
-function setupPlayback (audio, listing) {
-  var $ = document.getElementById.bind(document);
-  var playEle = $("play");
-  var pause = $("pause");
-  var next = $("next");
-  var previous = $("previous");
-  var volume = $("volume");
-  var seek = $("seek");
-  listing.addEventListener("click", function (e) {
-    var target = e.target.nodeName === "SPAN" ? e.target.parentNode : e.target;
-    play(audio, target.dataset.ext, target.dataset.songID);
-  });
-  playEle.addEventListener("click", function () {});
-  pause.addEventListener("click", function () {
-    audio.pause();
-  });
-};
-
 window.addEventListener("DOMContentLoaded", function () {
-  var audio = new Audio;
   var listing = document.getElementById("listing");
   listing.parentElement.addEventListener("scroll", function (evt) {
     console.log(evt.target.scrollTop);
@@ -59,8 +35,6 @@ window.addEventListener("DOMContentLoaded", function () {
       console.log("Reached Top");
     }
   });
-
-  setupPlayback(audio, listing);
 
   var xhr = new XMLHttpRequest;
   xhr.open("GET", "list");

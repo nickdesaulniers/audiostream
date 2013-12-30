@@ -9,11 +9,10 @@
     <section>
       <ul id="listing"></ul>
     </section>
-    <section class="z2">
-      <button id="play">Play</button>
-      <button id="pause">Pause</button>
-      <button id="next">Play</button>
-      <button id="previous">Play</button>
+    <section id="nowPlaying">
+      <button id="play">Play/Pause</button>
+      <button id="next">Next</button>
+      <button id="previous">Previous</button>
       <input type="range" id="volume" value="5" max="10"/>
       <input type="range" id="seek" value="0"/>
     </section>
@@ -21,7 +20,7 @@
       <nav>
         <div><div><a>Back</a></div></div>
         <div><div><a>AudioStream</a></div></div>
-        <div><div><a>Now Playing</a></div></div>
+        <div id="playing"><div><a>Now Playing</a></div></div>
       </nav>
     </header>
     <footer>
@@ -34,6 +33,8 @@
       </nav>
     </footer>
     <script src="js/new.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/av.js"></script>
   </body>
 </html>
 

@@ -77,14 +77,14 @@ footer nav > div > div {
   padding: 10px;
   text-align: center;
 }
+#nowPlaying {
+  z-index: -1;
+}
 .title {
   display: block;
 }
 .artist {
   font-size: 80%;
   padding-right: 5px;
-}
-.z2 {
-  z-index: -1;
 }
 
