@@ -5,7 +5,7 @@ var FileMap = require('../lib/filemap').FileMap;
 var convert = require('../lib/convert');
 
 exports.index = function (req, res) {
-  res.sendfile('public/pages/index.html');
+  res.sendfile('public/index.html');
 }
 
 exports.list = function(req, res){

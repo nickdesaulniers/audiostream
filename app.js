@@ -16,7 +16,7 @@ app.configure(function(){
   // HTTP Basic Authentication
   //app.use(express.basicAuth(config.username, config.password));
   app.set('port', process.env.PORT || 3000);
-  app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
+  app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
