@@ -12,11 +12,14 @@ UI.nowPlaying = function (e) {
   ele.style.zIndex = -1 * parseInt(getComputedStyle(ele).zIndex, 10);;
 };
 
+UI.volume = function (e) { AV.audio.volume = parseFloat(e.target.value); };
+
 window.addEventListener("DOMContentLoaded", function () {
   var $ = document.getElementById.bind(document);
   function clicked (id, cb) { $(id).addEventListener("click", cb); };
   clicked("play", UI.play);
   clicked("listing", UI.playListing);
   clicked("playing", UI.nowPlaying);
+  clicked("volume", UI.volume);
 });
 
