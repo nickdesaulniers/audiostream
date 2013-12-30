@@ -1,10 +1,11 @@
-function createSongListing (song_name, artist, duration) {
+function createSongListing (song) {
   var li = document.createElement("li");
-  var args = arguments;
-  ["song_name", "artist", "duration"].forEach(function (klass, index) {
+  li.dataset.songID = song.songID;
+  li.dataset.ext = song.ext;
+  ["title", "artist", "duration"].forEach(function (klass) {
     var span = document.createElement("span");
     span.classList.add(klass);
-    span.textContent = args[index];
+    span.textContent = song[klass];
     li.appendChild(span);
   });
   return li;
@@ -24,7 +25,31 @@ function buildSort () {
   };
 };
 
+function play (audio, ext, songID) {
+  audio.src = "/transcode/" + ext + "/" + songID;
+  audio.play();
+};
+
+function setupPlayback (audio, listing) {
+  var $ = document.getElementById.bind(document);
+  var playEle = $("play");
+  var pause = $("pause");
+  var next = $("next");
+  var previous = $("previous");
+  var volume = $("volume");
+  var seek = $("seek");
+  listing.addEventListener("click", function (e) {
+    var target = e.target.nodeName === "SPAN" ? e.target.parentNode : e.target;
+    play(audio, target.dataset.ext, target.dataset.songID);
+  });
+  playEle.addEventListener("click", function () {});
+  pause.addEventListener("click", function () {
+    audio.pause();
+  });
+};
+
 window.addEventListener("DOMContentLoaded", function () {
+  var audio = new Audio;
   var listing = document.getElementById("listing");
   listing.parentElement.addEventListener("scroll", function (evt) {
     console.log(evt.target.scrollTop);
@@ -35,13 +60,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  listing.addEventListener("click", function (e) {
-    if (e.target.nodeName === "SPAN") {
-      console.log(e.target.parentNode);
-    } else {
-      console.log(e.target);
-    }
-  });
+  setupPlayback(audio, listing);
 
   var xhr = new XMLHttpRequest;
   xhr.open("GET", "list");
@@ -55,7 +74,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
     var frag = document.createDocumentFragment();
     songs.sort(buildSort("artist", "album", "track")).forEach(function (song) {
-      frag.appendChild(createSongListing(song.title, song.artist, song.duration));
+      frag.appendChild(createSongListing(song));
     });
     listing.appendChild(frag);
   };
