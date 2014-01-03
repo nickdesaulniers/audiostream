@@ -1,5 +1,4 @@
 var fs = require('fs');
-var child_process = require('child_process');
 var Metalib = require('fluent-ffmpeg').Metadata;
 var FileMap = require('../lib/filemap').FileMap;
 var convert = require('../lib/convert');
