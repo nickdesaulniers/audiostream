@@ -4,10 +4,6 @@ var Metalib = require('fluent-ffmpeg').Metadata;
 var FileMap = require('../lib/filemap').FileMap;
 var convert = require('../lib/convert');
 
-exports.index = function (req, res) {
-  res.sendfile('public/index.html');
-}
-
 exports.list = function(req, res){
   var filemap = FileMap.retrieveAll();
   var filemapKeys = Object.keys(filemap);

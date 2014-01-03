@@ -11,13 +11,12 @@ app.configure(function () {
   app.use(express.compress());
   // HTTP Basic Authentication
   //app.use(express.basicAuth(config.username, config.password));
-  app.use(express.favicon(__dirname + 'public/img/favicon.ico'));
+  app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
   app.use(express.bodyParser());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
 
-app.get('/', routes.index);
 app.get('/list', routes.list);
 app.get('/transcode/:extension/:fileID', routes.transcode);
 
