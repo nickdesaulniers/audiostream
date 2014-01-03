@@ -2,6 +2,7 @@ var express = require('express');
 var http = require('http');
 var routes = require('./routes');
 var config = require('./config/config');
+var FileMap = require('./lib/filemap');
 var app = express();
 
 app.configure(function () {
@@ -17,10 +18,13 @@ app.configure(function () {
   app.use(express.static(__dirname + '/public'));
 });
 
-app.get('/list', routes.list);
-app.get('/transcode/:extension/:fileID', routes.transcode);
+FileMap.update(function () {
+  routes.FileMap = FileMap;
+  app.get('/list', routes.list);
+  app.get('/transcode/:extension/:fileID', routes.transcode);
 
-http.createServer(app).listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + app.get('port'));
+  http.createServer(app).listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + app.get('port'));
+  });
 });
 

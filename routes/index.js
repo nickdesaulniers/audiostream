@@ -1,41 +1,13 @@
 var fs = require('fs');
-var Metalib = require('fluent-ffmpeg').Metadata;
-var FileMap = require('../lib/filemap').FileMap;
 var convert = require('../lib/convert');
 
-exports.list = function (req, res){
-  var filemap = FileMap.retrieveAll();
-  var filemapKeys = Object.keys(filemap);
-  var files = [];
-
-  filemapKeys.forEach(function (id) {
-    var filename = filemap[id];
-    new Metalib(filename, function (metadata, err) {
-      if (err) return console.error(err);
-      files.push({
-        songID: id,
-        ext: filename.replace(/.+\./, ''),
-        title: metadata.title || filename.replace(/.+\//, ''),
-        artist: metadata.artist,
-        album: metadata.album,
-        year: metadata.date,
-        track: metadata.track,
-        duration: metadata.durationraw,
-      });
-
-      // On the last file
-      if (files.length === filemapKeys.length) {
-        res.send(files);
-      }
-    });
-  });
-};
-
+exports.FileMap = null;
+exports.list = function (req, res) { res.send(exports.FileMap.retrieveAll()); };
 exports.transcode = function (req, res) {
   // Check if original file ext is in filemap
-  var file_path = FileMap.retrieve(req.params.fileID);
+  var file_path = exports.FileMap.retrieve(req.params.fileID);
   if (!file_path) {
-    console.log('original file was not in filemap');
+    console.log('Original file was not in filemap');
     return res.send(404);
   }
 
@@ -49,7 +21,7 @@ exports.transcode = function (req, res) {
 
   // Was the requested extension previously encoded?
   var previous_file_name = req.params.fileID + '.' + requested_extension;
-  var previous_file_path = FileMap.previously_transcoded(previous_file_name);
+  var previous_file_path = exports.FileMap.previously_transcoded(previous_file_name);
   if (previous_file_path) {
     console.log('Found previously encoded version in library/');
     return res.sendfile(previous_file_path);
