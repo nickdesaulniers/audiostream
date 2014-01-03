@@ -4,7 +4,7 @@ var Metalib = require('fluent-ffmpeg').Metadata;
 var FileMap = require('../lib/filemap').FileMap;
 var convert = require('../lib/convert');
 
-exports.list = function(req, res){
+exports.list = function (req, res){
   var filemap = FileMap.retrieveAll();
   var filemapKeys = Object.keys(filemap);
   var files = [];
@@ -72,5 +72,5 @@ exports.transcode = function (req, res) {
     },
   };
   convert(transcode_args);
-}
+};
 
