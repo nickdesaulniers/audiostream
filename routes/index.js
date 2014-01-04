@@ -14,7 +14,7 @@ exports.transcode = function (req, res) {
   // Was the requested extension the file's current extension?
   var requested_extension = req.params.extension;
   var actual_extension = file_path.replace(/.+\./, '');
-  if (requested_extension === actual_extension) {
+  if (requested_extension === actual_extension.toLowerCase()) {
     console.log('The file\'s actual extension was requested');
     return res.sendfile(file_path);
   }
