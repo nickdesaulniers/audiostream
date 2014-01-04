@@ -8,7 +8,8 @@ UI.play = function () {
 
 UI.playListing = function (e) {
   var target = e.target.nodeName === "SPAN" ? e.target.parentNode : e.target;
-  AV.play(target.dataset.ext, target.dataset.songID, UI.seekDuration);
+  document.getElementById("seek").disabled = true;
+  AV.play(target.dataset.ext, target.dataset.songID);
 };
 
 UI.nowPlaying = function (e) {
@@ -19,6 +20,7 @@ UI.nowPlaying = function (e) {
 UI.volume = function (e) { AV.audio.volume = e.target.valueAsNumber; };
 UI.seekDown = function () { UI.seekMouseDown = true; };
 UI.seekUp = function () { UI.seekMouseDown = false; };
+UI.seek = function (e) { AV.audio.currentTime = e.target.value; };
 
 UI.timechange = function () {
   if (!UI.seekMouseDown) {
@@ -26,10 +28,16 @@ UI.timechange = function () {
   }
 };
 
-UI.seekDuration = function (audio) {
+UI.seekDuration = function () {
   var seek = document.getElementById("seek");
-  seek.min = seek.value = audio.seekable.start(0);;
-  seek.max = audio.seekable.end(0);
+  if (isFinite(AV.audio.duration) && AV.audio.seekable.length > 0) {
+    seek.min = seek.value = AV.audio.seekable.start(0);
+    seek.max = AV.audio.seekable.end(0);
+    seek.disabled = false;
+  } else {
+    seek.min = seek.value = 0;
+    seek.max = 1;
+  }
 };
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -44,6 +52,8 @@ window.addEventListener("DOMContentLoaded", function () {
   on("volume", "click", UI.volume);
   on("seek", "mousedown", UI.seekDown);
   on("seek", "mouseup", UI.seekUp);
+  on("seek", "change", UI.seek);
   on(AV.audio, "timeupdate", UI.timechange);
+  on(AV.audio, "loadedmetadata", UI.seekDuration);
 });
 

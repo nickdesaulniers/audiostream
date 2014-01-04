@@ -26,16 +26,6 @@ function buildSort () {
 };
 
 window.addEventListener("DOMContentLoaded", function () {
-  var listing = document.getElementById("listing");
-  listing.parentElement.addEventListener("scroll", function (evt) {
-    console.log(evt.target.scrollTop);
-    if (evt.target.scrollTop === evt.target.scrollTopMax) {
-      console.log("Reached Bottom");
-    } else if (evt.target.scrollTop === 0) {
-      console.log("Reached Top");
-    }
-  });
-
   var xhr = new XMLHttpRequest;
   xhr.open("GET", "list");
   xhr.overrideMimeType("application/json");
@@ -50,7 +40,8 @@ window.addEventListener("DOMContentLoaded", function () {
     songs.sort(buildSort("artist", "album", "track")).forEach(function (song) {
       frag.appendChild(createSongListing(song));
     });
-    listing.appendChild(frag);
+    document.getElementById("listing").appendChild(frag);
   };
   xhr.send();
 });
+

@@ -17,11 +17,8 @@ AV.getSupportedExt = function (ext) {
   return AV.support[ext] ? ext : AV.preferred[0];
 };
 
-AV.play = function (ext, songID, cb) {
+AV.play = function (ext, songID) {
   this.audio.src = "/transcode/" + AV.getSupportedExt(ext) + "/" + songID;
   this.audio.play();
-  if (typeof cb === "function") {
-    this.audio.onloadedmetadata = cb.bind(null, this.audio);
-  }
 };
 
