@@ -12,6 +12,7 @@ body {
   width: 100%;
   height: 100%;
   background: purple;
+  font-family: Helvetica;
 }
 header {
   position: fixed;
@@ -88,11 +89,12 @@ footer nav > div > div {
 #nowPlaying {
   z-index: -1;
 }
-.title {
+.title, .album {
   display: block;
 }
 .artist {
   font-size: 80%;
   padding-right: 5px;
+  font-weight: bold;
 }
 

@@ -2,7 +2,7 @@ function createSongListing (song) {
   var li = document.createElement("li");
   li.dataset.songID = song.songID;
   li.dataset.ext = song.ext;
-  ["title", "artist", "duration"].forEach(function (klass) {
+  ["title", "artist", "duration", "album"].forEach(function (klass) {
     var span = document.createElement("span");
     span.classList.add(klass);
     span.textContent = song[klass];
