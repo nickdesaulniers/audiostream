@@ -46,13 +46,15 @@ window.addEventListener("DOMContentLoaded", function () {
     if (typeof target === "string") target = $(target);
     target.addEventListener(eventType, cb);
   };
+  var seek = $("seek");
+  seek.value = 0;
   on("play", "click", UI.play);
   on("listing", "click", UI.playListing);
   on("playing", "click", UI.nowPlaying);
   on("volume", "click", UI.volume);
-  on("seek", "mousedown", UI.seekDown);
-  on("seek", "mouseup", UI.seekUp);
-  on("seek", "change", UI.seek);
+  on(seek, "mousedown", UI.seekDown);
+  on(seek, "mouseup", UI.seekUp);
+  on(seek, "change", UI.seek);
   on(AV.audio, "timeupdate", UI.timechange);
   on(AV.audio, "loadedmetadata", UI.seekDuration);
 });
