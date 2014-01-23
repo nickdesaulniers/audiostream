@@ -8,7 +8,7 @@
   "dependencies": {
     "express": ">= 3.0.1",
     "shelljs": ">= 0.0.8",
-    "fluent-ffmpeg": ">= 1.3.1"
+    "fluent-ffmpeg": "https://github.com/nickdesaulniers/node-fluent-ffmpeg/archive/0.2.tar.gz"
   },
   "description": "Stream and transcode your music library",
   "main": "app.js",
