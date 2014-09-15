@@ -1,6 +1,6 @@
 var fs = require('fs');
 var child_process = require('child_process');
-var Metalib = require('fluent-ffmpeg').Metadata;
+var ffmpeg = require('fluent-ffmpeg');
 var FileMap = require('../lib/filemap').FileMap;
 var convert = require('../lib/convert');
 
@@ -15,17 +15,20 @@ exports.list = function(req, res){
 
   filemapKeys.forEach(function (id) {
     var filename = filemap[id];
-    new Metalib(filename, function (metadata, err) {
+    ffmpeg.ffprobe(filename, function (err, metadata) {
       if (err) return console.error(err);
+      var format = metadata.format;
+      var tags = format.tags;
+
       files.push({
         songID: id,
         ext: filename.replace(/.+\./, ''),
-        title: metadata.title || filename.replace(/.+\//, ''),
-        artist: metadata.artist,
-        album: metadata.album,
-        year: metadata.date,
-        track: metadata.track,
-        duration: metadata.durationraw,
+        title: tags.title || filename.replace(/.+\//, ''),
+        artist: tags.artist,
+        album: tags.album,
+        year: tags.date,
+        track: tags.track,
+        duration: format.duration,
       });
 
       // On the last file
