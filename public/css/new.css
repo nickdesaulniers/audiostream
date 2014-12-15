@@ -55,7 +55,8 @@ footer {
   padding: 10px;
 }
 #nowPlaying {
-  z-index: -1;
+  opacity: 0;
+  transition: opacity 1s;
 }
 .title, .album {
   display: block;

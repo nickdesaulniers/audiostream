@@ -14,7 +14,7 @@ UI.playListing = function (e) {
 
 UI.nowPlaying = function (e) {
   var ele = document.getElementById("nowPlaying");
-  ele.style.zIndex = -1 * parseInt(getComputedStyle(ele).zIndex, 10);;
+  ele.style.opacity = Number(!Boolean(parseInt(ele.style.opacity, 10)));
 };
 
 UI.volume = function (e) { AV.audio.volume = e.target.valueAsNumber; };
