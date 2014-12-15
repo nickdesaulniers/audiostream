@@ -9,12 +9,14 @@ UI.play = function () {
 UI.playListing = function (e) {
   var target = e.target.nodeName === "SPAN" ? e.target.parentNode : e.target;
   document.getElementById("seek").disabled = true;
+  UI.nowPlaying();
   AV.play(target.dataset.ext, target.dataset.songID);
 };
 
 UI.nowPlaying = function (e) {
   var ele = document.getElementById("nowPlaying");
   ele.style.opacity = Number(!Boolean(parseInt(ele.style.opacity, 10)));
+  ele.style.zIndex = -1 * parseInt(getComputedStyle(ele).zIndex, 10);
 };
 
 UI.volume = function (e) { AV.audio.volume = e.target.valueAsNumber; };
