@@ -51,13 +51,24 @@ footer {
 }
 #listing li {
   list-style: none;
-  border-bottom: 1px solid black;
-  padding: 10px;
+  border-bottom: 1px solid #B2987B;
+  padding: 1.7vh;
+  min-height: 8vh;
 }
 #nowPlaying {
   z-index: -1;
   opacity: 0;
   transition: all 1s;
+}
+#play {
+  min-width: 10vw;
+  min-height: 10vh;
+  background: url("/img/play.svg") #699FB2 0 0 / 100% 100% no-repeat;
+}
+#play.playing {
+  background-image: url("/img/pause.svg");
+  background-position: 50% 0;
+  background-size: 50% 100%;
 }
 .title, .album {
   display: block;

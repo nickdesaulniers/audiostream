@@ -4,11 +4,13 @@ var UI = {
 
 UI.play = function () {
   AV.audio.paused ? AV.audio.play() : AV.audio.pause();
+  document.getElementById("play").classList.toggle("playing");
 };
 
 UI.playListing = function (e) {
   var target = e.target.nodeName === "SPAN" ? e.target.parentNode : e.target;
   document.getElementById("seek").disabled = true;
+  document.getElementById("play").classList.add("playing");
   UI.nowPlaying();
   AV.play(target.dataset.ext, target.dataset.songID);
 };
@@ -39,6 +41,7 @@ UI.seekDuration = function () {
   } else {
     seek.min = seek.value = 0;
     seek.max = 1;
+    console.warn("Bad duration", AV.audio.duration);
   }
 };
 
